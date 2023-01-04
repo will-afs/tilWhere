@@ -1,0 +1,81 @@
+[tool.poetry]
+name = "tilWhere"
+version = "0.1.0"
+description = ""
+authors = ["William AFONSO <william.afonso.pro@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10.6"
+shapely = "^2.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 90
+target-version = ['py310']
+
+[tool.isort]
+profile = "black"
+py_version = 310
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+xfail_strict = true
+
+[tool.diff_cover]
+fail_under = 90
+compare_branch = "origin/master"
+show_uncovered = true
+ignore_whitespace = true
+
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+]
+
+[tool.mypy]
+ignore_missing_imports = false
+python_version = "3.10"
+ignore_errors = false
+follow_imports = "normal"
+strict_optional = true
+no_implicit_optional = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_untyped_decorators = true
+disallow_any_generics = true
+warn_unreachable = true
+strict_equality = true
+plugins = "pydantic.mypy"
+
+[[tool.mypy.overrides]]
+follow_imports = "skip"
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# In practice strict optionality in tests bring little value.
+# Leads to reduced readability of the code with assertions like the following
+# assert a == b.foo if b else None
+# rather than simply
+# assert a == b.foo
+strict_optional = false
+module = ["tests.*"]
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+
+[tool.flake8]
+max-line-length = 90
+max-arguments = 6
+inline-quotes = "\""
+rst-roles = ["class", "func", "ref"]
+rst-directives = ["envvar", "exception"]
